@@ -1,14 +1,18 @@
 // package functions
 import { Navigate, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 // components
 import ThoughtList from '../components/ThoughtList';
 import FriendList from '../components/FriendList';
 // custom utils
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
+import { ADD_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const Profile = () => {
+  // setup mutations
+  const [addFriend] = useMutation(ADD_FRIEND);
+
   // check url string for a username
   const { username: userParam } = useParams();
 
@@ -32,6 +36,7 @@ const Profile = () => {
 
   // if no username, and no logged in user, display error message
   if (!user?.username) {
+    // console.log(user);
     return (
       <h4>
         You need to be logged in to see this page. Use the navigation links above to sign up or log in!
@@ -39,12 +44,31 @@ const Profile = () => {
     );
   }
 
+  // add friend callback
+  const handleClick = async () => {
+    try {
+      await addFriend({
+        variables: { id: user._id }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const showAddFriend = (Auth.loggedIn() && userParam);
+
   return (
     <div>
       <div className="flex-row mb-3">
-      <h2 className="bg-dark text-secondary p-3 display-inline-block">
-        Viewing {userParam ? `${user.username}'s` : 'your'} profile.
-      </h2>
+        <h2 className="bg-dark text-secondary p-3 display-inline-block">
+          Viewing {userParam ? `${user.username}'s` : 'your'} profile.
+        </h2>
+
+        {showAddFriend && (
+          <button className="btn ml-auto" onClick={handleClick}>
+            Add Friend
+          </button>
+        )}
       </div>
 
       <div className="flex-row justify-space-between mb-3">
