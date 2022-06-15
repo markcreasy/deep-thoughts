@@ -8,7 +8,6 @@ module.exports = {
   signToken: function({ username, email, _id }) {
     const payload = { username, email, _id };
     const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-    console.log("Signed Token",token);
     return token;
   },
   authMiddleware: function({ req }) {
