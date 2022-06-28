@@ -2,8 +2,8 @@
 
 Deep thoughts is a MERN blog to showcase all of the skills I learned in the
 fullstack JS bootcamp. This project contains:
-- A server side that uses NodeJS to interact with a MongoDB, and authenticate
-users via JSON Web Tokens.
+- A NodeJS server side that uses Appolo-Server-Express and GraphQl to interact with a MongoDB,
+and jsonwebtoken to authenticate users.
 - A ReactJS front end where users can view all blog posts by all users, or
 sign in/login to post, comment, and follow other users via a friends list.
 
